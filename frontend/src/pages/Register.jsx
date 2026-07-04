@@ -12,9 +12,9 @@ const Register = () => {
   const onSubmit = async (data) => {
     try {
       await register({ name: data.name, email: data.email, password: data.password });
-      navigate('/'); // Redirect to dashboard or home
+      navigate('/');
     } catch (error) {
-      // Error is handled by context/toast
+
     }
   };
 
@@ -44,7 +44,7 @@ const Register = () => {
               />
               {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name.message}</p>}
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1" htmlFor="email">
                 Email Address
@@ -54,14 +54,14 @@ const Register = () => {
                 type="email"
                 className={`appearance-none block w-full px-4 py-3 rounded-xl bg-white/5 border ${errors.email ? 'border-red-500' : 'border-white/10'} text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all`}
                 placeholder="you@example.com"
-                {...registerForm("email", { 
+                {...registerForm("email", {
                   required: "Email is required",
                   pattern: { value: /^\S+@\S+$/i, message: "Invalid email format" }
                 })}
               />
               {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email.message}</p>}
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1" htmlFor="password">
                 Password
@@ -71,14 +71,14 @@ const Register = () => {
                 type="password"
                 className={`appearance-none block w-full px-4 py-3 rounded-xl bg-white/5 border ${errors.password ? 'border-red-500' : 'border-white/10'} text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all`}
                 placeholder="••••••••"
-                {...registerForm("password", { 
+                {...registerForm("password", {
                   required: "Password is required",
                   minLength: { value: 6, message: "Password must be at least 6 characters" }
                 })}
               />
               {errors.password && <p className="text-red-400 text-xs mt-1">{errors.password.message}</p>}
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1" htmlFor="confirmPassword">
                 Confirm Password
@@ -88,7 +88,7 @@ const Register = () => {
                 type="password"
                 className={`appearance-none block w-full px-4 py-3 rounded-xl bg-white/5 border ${errors.confirmPassword ? 'border-red-500' : 'border-white/10'} text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all`}
                 placeholder="••••••••"
-                {...registerForm("confirmPassword", { 
+                {...registerForm("confirmPassword", {
                   validate: value => value === password || "Passwords do not match"
                 })}
               />
@@ -105,7 +105,7 @@ const Register = () => {
               {isSubmitting ? 'Creating account...' : 'Sign Up'}
             </button>
           </div>
-          
+
           <div className="text-center text-sm text-gray-400 mt-4">
             Already have an account?{' '}
             <Link to="/login" className="font-medium text-purple-400 hover:text-purple-300 transition-colors">

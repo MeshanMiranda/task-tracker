@@ -5,9 +5,11 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useAuth } from './contexts/AuthContext';
+import TasksPage from './pages/TasksPage';
+import UsersPage from './pages/UsersPage';
 
 function AppContent() {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 flex flex-col font-sans">
@@ -18,12 +20,25 @@ function AppContent() {
           </Link>
           <nav>
             {isAuthenticated ? (
-              <button
-                onClick={logout}
-                className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-pink-600 bg-pink-50 hover:bg-pink-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
-              >
-                Logout
-              </button>
+              <div className="flex items-center space-x-4">
+                <Link to="/" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
+                  Dashboard
+                </Link>
+                <Link to="/tasks" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
+                  Tasks
+                </Link>
+                {user?.role === 'ADMIN' && (
+                  <Link to="/users" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
+                    Users
+                  </Link>
+                )}
+                <button
+                  onClick={logout}
+                  className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-pink-600 bg-pink-50 hover:bg-pink-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
+                >
+                  Logout
+                </button>
+              </div>
             ) : (
               <div className="space-x-4">
                 <Link to="/login" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
@@ -54,7 +69,7 @@ function AppContent() {
                       Dashboard
                     </h1>
                     <p className="text-lg text-gray-500 mb-8 leading-relaxed">
-                      Welcome to your task tracker. User management setup is complete. You are securely authenticated!
+                      Welcome to your task tracker. Navigate to Tasks to manage your work.
                     </p>
                     <div className="inline-block p-1 rounded-full bg-gradient-to-r from-green-400 to-emerald-500">
                       <div className="bg-white rounded-full px-6 py-2 text-sm font-bold text-emerald-600">
@@ -63,6 +78,22 @@ function AppContent() {
                     </div>
                   </div>
                 </div>
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/tasks" 
+            element={
+              <ProtectedRoute>
+                <TasksPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/users" 
+            element={
+              <ProtectedRoute>
+                <UsersPage />
               </ProtectedRoute>
             } 
           />
