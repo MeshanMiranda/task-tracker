@@ -97,8 +97,8 @@ public class TaskService {
     }
 
     private User getCurrentUser() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     private void checkAccess(Task task) {
@@ -112,6 +112,7 @@ public class TaskService {
         UserDto userDto = UserDto.builder()
                 .id(task.getOwner().getId())
                 .name(task.getOwner().getName())
+                .username(task.getOwner().getUsername())
                 .email(task.getOwner().getEmail())
                 .role(task.getOwner().getRole().name())
                 .createdAt(task.getOwner().getCreatedAt())

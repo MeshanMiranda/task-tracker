@@ -26,6 +26,7 @@ public class UserController {
                 .map(user -> UserDto.builder()
                         .id(user.getId())
                         .name(user.getName())
+                        .username(user.getUsername())
                         .email(user.getEmail())
                         .role(user.getRole().name())
                         .createdAt(user.getCreatedAt())

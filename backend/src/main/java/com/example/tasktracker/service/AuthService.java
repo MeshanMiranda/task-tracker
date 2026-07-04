@@ -26,9 +26,13 @@ public class AuthService {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new IllegalArgumentException("User with this email already exists");
         }
+        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+            throw new IllegalArgumentException("User with this username already exists");
+        }
 
         var user = User.builder()
                 .name(request.getName())
+                .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
@@ -40,6 +44,7 @@ public class AuthService {
         var userDto = com.example.tasktracker.dto.UserDto.builder()
                 .id(user.getId())
                 .name(user.getName())
+                .username(user.getUsername())
                 .email(user.getEmail())
                 .role(user.getRole().name())
                 .createdAt(user.getCreatedAt())
@@ -55,18 +60,19 @@ public class AuthService {
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
+                        request.getUsername(),
                         request.getPassword()
                 )
         );
-        var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
+        var user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid username or password"));
         
         var jwtToken = jwtService.generateToken(user);
         
         var userDto = com.example.tasktracker.dto.UserDto.builder()
                 .id(user.getId())
                 .name(user.getName())
+                .username(user.getUsername())
                 .email(user.getEmail())
                 .role(user.getRole().name())
                 .createdAt(user.getCreatedAt())

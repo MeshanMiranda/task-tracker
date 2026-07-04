@@ -11,7 +11,7 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     try {
-      await register({ name: data.name, email: data.email, password: data.password });
+      await register({ name: data.name, username: data.username, email: data.email, password: data.password });
       navigate('/');
     } catch (error) {
 
@@ -43,6 +43,20 @@ const Register = () => {
                 {...registerForm("name", { required: "Name is required" })}
               />
               {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name.message}</p>}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 dark:text-gray-600 mb-1" htmlFor="username">
+                Username
+              </label>
+              <input
+                id="username"
+                type="text"
+                className={`appearance-none block w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-800/5 border ${errors.username ? 'border-red-500' : 'border-white/10'} text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all`}
+                placeholder="johndoe"
+                {...registerForm("username", { required: "Username is required" })}
+              />
+              {errors.username && <p className="text-red-400 text-xs mt-1">{errors.username.message}</p>}
             </div>
 
             <div>

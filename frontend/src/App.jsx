@@ -79,6 +79,7 @@ function AppContent() {
                     <div className="absolute right-0 mt-3 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-100 dark:border-gray-800 overflow-hidden z-50 transform origin-top-right transition-all">
                       <div className="px-4 py-4 bg-gray-50 dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
                         <p className="text-sm font-bold text-gray-900 dark:text-white truncate">{user?.name || 'User Name'}</p>
+                        <p className="text-xs text-gray-400 dark:text-gray-500 truncate mt-1">@{user?.username || 'username'}</p>
                         <p className="text-xs text-gray-500 dark:text-gray-400 truncate mt-1">{user?.email || 'user@example.com'}</p>
                       </div>
 

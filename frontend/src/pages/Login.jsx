@@ -31,20 +31,19 @@ const Login = () => {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 dark:text-gray-600 mb-1" htmlFor="email">
-                Email Address
+              <label className="block text-sm font-medium text-gray-300 dark:text-gray-600 mb-1" htmlFor="username">
+                Username
               </label>
               <input
-                id="email"
-                type="email"
-                className={`appearance-none block w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-800/5 border ${errors.email ? 'border-red-500' : 'border-white/10'} text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-transparent transition-all`}
-                placeholder="you@example.com"
-                {...register("email", { 
-                  required: "Email is required",
-                  pattern: { value: /^\S+@\S+$/i, message: "Invalid email format" }
+                id="username"
+                type="text"
+                className={`appearance-none block w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-800/5 border ${errors.username ? 'border-red-500' : 'border-white/10'} text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-transparent transition-all`}
+                placeholder="johndoe"
+                {...register("username", { 
+                  required: "Username is required"
                 })}
               />
-              {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email.message}</p>}
+              {errors.username && <p className="text-red-400 text-xs mt-1">{errors.username.message}</p>}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-300 dark:text-gray-600 mb-1" htmlFor="password">
