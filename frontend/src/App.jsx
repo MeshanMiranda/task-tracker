@@ -52,9 +52,6 @@ function AppContent() {
             {isAuthenticated ? (
               <div className="flex items-center space-x-6">
                 <Link to="/" className="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
-                  Dashboard
-                </Link>
-                <Link to="/tasks" className="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
                   Tasks
                 </Link>
                 {user?.role === 'ADMIN' && (
@@ -136,28 +133,6 @@ function AppContent() {
           {/* Protected Routes */}
           <Route
             path="/"
-            element={
-              <ProtectedRoute>
-                <div className="flex-grow flex items-center justify-center p-4">
-                  <div className="text-center max-w-2xl mx-auto bg-white dark:bg-gray-800 p-10 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800">
-                    <h1 className="text-5xl font-extrabold text-gray-900 dark:text-white mb-6 tracking-tight">
-                      Dashboard
-                    </h1>
-                    <p className="text-lg text-gray-500 dark:text-gray-400 mb-8 leading-relaxed">
-                      Welcome to your task tracker. Navigate to Tasks to manage your work.
-                    </p>
-                    <div className="inline-block p-1 rounded-full bg-gradient-to-r from-green-400 to-emerald-500">
-                      <div className="bg-white dark:bg-gray-800 rounded-full px-6 py-2 text-sm font-bold text-emerald-600">
-                        Authentication Active
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/tasks"
             element={
               <ProtectedRoute>
                 <TasksPage />
