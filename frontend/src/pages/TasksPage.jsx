@@ -111,17 +111,17 @@ const TasksPage = () => {
 
   const getStatusBadgeClass = (status) => {
     switch (status) {
-      case 'TODO': return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'TODO': return 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-100 border-gray-200 dark:border-gray-700';
       case 'IN_PROGRESS': return 'bg-blue-100 text-blue-800 border-blue-200';
       case 'DONE': return 'bg-green-100 text-green-800 border-green-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+      default: return 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-100 border-gray-200 dark:border-gray-700';
     }
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in-up">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Tasks</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Tasks</h1>
         <button
           onClick={() => handleOpenModal()}
           className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex items-center"
@@ -131,14 +131,14 @@ const TasksPage = () => {
         </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 p-6 mb-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Status</label>
             <select
               value={statusFilter}
               onChange={(e) => { setStatusFilter(e.target.value); setPage(0); }}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border py-2 px-3 transition-colors duration-200"
+              className="block w-full rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border py-2 px-3 transition-colors duration-200"
             >
               <option value="">All Statuses</option>
               <option value="TODO">To Do</option>
@@ -149,11 +149,11 @@ const TasksPage = () => {
           
           {user?.role === 'ADMIN' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Owner</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Owner</label>
               <select
                 value={ownerFilter}
                 onChange={(e) => { setOwnerFilter(e.target.value); setPage(0); }}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border py-2 px-3 transition-colors duration-200"
+                className="block w-full rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border py-2 px-3 transition-colors duration-200"
               >
                 <option value="">All Owners</option>
                 {users.map(u => (
@@ -164,11 +164,11 @@ const TasksPage = () => {
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Sort By</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Sort By</label>
             <select
               value={sortOrder}
               onChange={(e) => { setSortOrder(e.target.value); setPage(0); }}
-              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border py-2 px-3 transition-colors duration-200"
+              className="block w-full rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm border py-2 px-3 transition-colors duration-200"
             >
               <option value="dueDate,asc">Due Date (Ascending)</option>
               <option value="dueDate,desc">Due Date (Descending)</option>
@@ -187,16 +187,16 @@ const TasksPage = () => {
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {tasks.map(task => (
-              <div key={task.id} className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+              <div key={task.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-800 hover:shadow-lg transition-shadow duration-300">
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-xl font-bold text-gray-900 truncate pr-4">{task.title}</h3>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white truncate pr-4">{task.title}</h3>
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusBadgeClass(task.status)}`}>
                       {task.status.replace('_', ' ')}
                     </span>
                   </div>
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-3 min-h-[4rem]">{task.description}</p>
-                  <div className="space-y-2 text-sm text-gray-500">
+                  <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3 min-h-[4rem]">{task.description}</p>
+                  <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
                     <div className="flex items-center">
                       <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                       Due: <span className={new Date(task.dueDate) < new Date() && task.status !== 'DONE' ? 'text-red-500 font-semibold ml-1' : 'ml-1'}>{task.dueDate || 'No date set'}</span>
@@ -209,7 +209,7 @@ const TasksPage = () => {
                     )}
                   </div>
                 </div>
-                <div className="bg-gray-50 px-6 py-3 border-t border-gray-100 flex justify-end space-x-3">
+                <div className="bg-gray-50 dark:bg-gray-900 px-6 py-3 border-t border-gray-100 dark:border-gray-800 flex justify-end space-x-3">
                   <button
                     onClick={() => handleOpenModal(task)}
                     className="text-indigo-600 hover:text-indigo-900 font-medium text-sm transition-colors duration-200"
@@ -226,8 +226,8 @@ const TasksPage = () => {
               </div>
             ))}
             {tasks.length === 0 && (
-               <div className="col-span-full py-12 text-center text-gray-500 bg-white rounded-xl shadow-sm border border-gray-100">
-                 <svg className="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+               <div className="col-span-full py-12 text-center text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800">
+                 <svg className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
                  <p className="text-lg">No tasks found.</p>
                  <p className="text-sm mt-1">Try adjusting your filters or create a new task.</p>
                </div>
@@ -239,17 +239,17 @@ const TasksPage = () => {
               <button
                 onClick={() => setPage(p => Math.max(0, p - 1))}
                 disabled={page === 0}
-                className={`px-4 py-2 border rounded-md text-sm font-medium transition-colors duration-200 ${page === 0 ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`}
+                className={`px-4 py-2 border rounded-md text-sm font-medium transition-colors duration-200 ${page === 0 ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 border-gray-200 dark:border-gray-700 cursor-not-allowed' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
               >
                 Previous
               </button>
-              <span className="text-sm text-gray-700 bg-white px-4 py-2 border border-gray-300 rounded-md font-medium">
+              <span className="text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md font-medium">
                 Page {page + 1} of {totalPages}
               </span>
               <button
                 onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
                 disabled={page === totalPages - 1}
-                className={`px-4 py-2 border rounded-md text-sm font-medium transition-colors duration-200 ${page === totalPages - 1 ? 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`}
+                className={`px-4 py-2 border rounded-md text-sm font-medium transition-colors duration-200 ${page === totalPages - 1 ? 'bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 border-gray-200 dark:border-gray-700 cursor-not-allowed' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
               >
                 Next
               </button>

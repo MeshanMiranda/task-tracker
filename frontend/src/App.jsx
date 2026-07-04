@@ -1,3 +1,4 @@
+import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -7,41 +8,114 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { useAuth } from './contexts/AuthContext';
 import TasksPage from './pages/TasksPage';
 import UsersPage from './pages/UsersPage';
+import ConfirmationModal from './components/ConfirmationModal';
+import logo from './assets/task_tracker_logo.png';
 
 function AppContent() {
   const { isAuthenticated, logout, user } = useAuth();
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(localStorage.getItem('theme') === 'dark');
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsProfileOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 flex flex-col font-sans">
-      <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-10">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white flex flex-col font-sans">
+      <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <Link to="/" className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 tracking-tight">
-            TaskTracker
+          <Link to="/" className="flex items-center space-x-2 text-2xl font-black tracking-tight">
+            <img src={logo} alt="TaskTracker Logo" className="h-10 w-10 object-contain" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">TaskTracker</span>
           </Link>
           <nav>
             {isAuthenticated ? (
-              <div className="flex items-center space-x-4">
-                <Link to="/" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
+              <div className="flex items-center space-x-6">
+                <Link to="/" className="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
                   Dashboard
                 </Link>
-                <Link to="/tasks" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
+                <Link to="/tasks" className="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
                   Tasks
                 </Link>
                 {user?.role === 'ADMIN' && (
-                  <Link to="/users" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
+                  <Link to="/users" className="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
                     Users
                   </Link>
                 )}
-                <button
-                  onClick={logout}
-                  className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-pink-600 bg-pink-50 hover:bg-pink-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500"
-                >
-                  Logout
-                </button>
+
+                {/* Profile Dropdown */}
+                <div className="relative" ref={dropdownRef}>
+                  <button
+                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                    className="flex items-center space-x-2 focus:outline-none"
+                  >
+                    <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">{user?.name || 'User'}</span>
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white font-bold shadow-md transform transition hover:scale-105">
+                      {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                    </div>
+                  </button>
+
+                  {isProfileOpen && (
+                    <div className="absolute right-0 mt-3 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-100 dark:border-gray-800 overflow-hidden z-50 transform origin-top-right transition-all">
+                      <div className="px-4 py-4 bg-gray-50 dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
+                        <p className="text-sm font-bold text-gray-900 dark:text-white truncate">{user?.name || 'User Name'}</p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate mt-1">{user?.email || 'user@example.com'}</p>
+                      </div>
+
+                      <div className="py-2">
+                        <div className="px-4 py-2 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                          <span className="text-sm font-medium text-gray-700 dark:text-gray-200">Dark Mode</span>
+                          <button
+                            onClick={toggleDarkMode}
+                            className={`w-11 h-6 flex items-center rounded-full p-1 transition-colors ${isDarkMode ? 'bg-purple-600' : 'bg-gray-300'}`}
+                          >
+                            <div className={`bg-white dark:bg-gray-800 w-4 h-4 rounded-full shadow-md transform transition-transform ${isDarkMode ? 'translate-x-5' : ''}`}></div>
+                          </button>
+                        </div>
+
+                        <button className="w-full text-left px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                          Settings
+                        </button>
+
+                        <div className="border-t border-gray-100 dark:border-gray-800 my-1"></div>
+
+                        <button
+                          onClick={() => {
+                            setIsLogoutModalOpen(true);
+                            setIsProfileOpen(false);
+                          }}
+                          className="w-full text-left px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
+                        >
+                          Logout
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             ) : (
               <div className="space-x-4">
-                <Link to="/login" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
+                <Link to="/login" className="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
                   Login
                 </Link>
                 <Link to="/register" className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transition-all shadow-md hover:shadow-lg">
@@ -57,52 +131,62 @@ function AppContent() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          
+
           {/* Protected Routes */}
-          <Route 
-            path="/" 
+          <Route
+            path="/"
             element={
               <ProtectedRoute>
                 <div className="flex-grow flex items-center justify-center p-4">
-                  <div className="text-center max-w-2xl mx-auto bg-white p-10 rounded-2xl shadow-xl border border-gray-100">
-                    <h1 className="text-5xl font-extrabold text-gray-900 mb-6 tracking-tight">
+                  <div className="text-center max-w-2xl mx-auto bg-white dark:bg-gray-800 p-10 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-800">
+                    <h1 className="text-5xl font-extrabold text-gray-900 dark:text-white mb-6 tracking-tight">
                       Dashboard
                     </h1>
-                    <p className="text-lg text-gray-500 mb-8 leading-relaxed">
+                    <p className="text-lg text-gray-500 dark:text-gray-400 mb-8 leading-relaxed">
                       Welcome to your task tracker. Navigate to Tasks to manage your work.
                     </p>
                     <div className="inline-block p-1 rounded-full bg-gradient-to-r from-green-400 to-emerald-500">
-                      <div className="bg-white rounded-full px-6 py-2 text-sm font-bold text-emerald-600">
+                      <div className="bg-white dark:bg-gray-800 rounded-full px-6 py-2 text-sm font-bold text-emerald-600">
                         Authentication Active
                       </div>
                     </div>
                   </div>
                 </div>
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/tasks" 
+          <Route
+            path="/tasks"
             element={
               <ProtectedRoute>
                 <TasksPage />
               </ProtectedRoute>
-            } 
+            }
           />
-          <Route 
-            path="/users" 
+          <Route
+            path="/users"
             element={
               <ProtectedRoute>
                 <UsersPage />
               </ProtectedRoute>
-            } 
+            }
           />
         </Routes>
       </main>
-      
-      <footer className="bg-white border-t border-gray-200 mt-auto">
+
+      <ConfirmationModal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        onConfirm={logout}
+        title="Confirm Logout"
+        message="Are you sure you want to log out?"
+        confirmText="Logout"
+        confirmColor="bg-red-600 hover:bg-red-700 focus:ring-red-500"
+      />
+
+      <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-sm text-gray-400">
+          <p className="text-center text-sm text-gray-400 dark:text-gray-500">
             &copy; 2026 TaskTracker. All rights reserved.
           </p>
         </div>
@@ -115,8 +199,8 @@ function App() {
   return (
     <BrowserRouter>
       <AppContent />
-      <ToastContainer 
-        position="bottom-right" 
+      <ToastContainer
+        position="bottom-right"
         autoClose={3000}
         hideProgressBar={false}
         newestOnTop

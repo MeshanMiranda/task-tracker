@@ -37,9 +37,18 @@ public class AuthService {
         
         var jwtToken = jwtService.generateToken(user);
         
+        var userDto = com.example.tasktracker.dto.UserDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .role(user.getRole().name())
+                .createdAt(user.getCreatedAt())
+                .build();
+        
         return AuthResponse.builder()
                 .token(jwtToken)
                 .message("User registered successfully")
+                .user(userDto)
                 .build();
     }
 
@@ -55,9 +64,18 @@ public class AuthService {
         
         var jwtToken = jwtService.generateToken(user);
         
+        var userDto = com.example.tasktracker.dto.UserDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .role(user.getRole().name())
+                .createdAt(user.getCreatedAt())
+                .build();
+        
         return AuthResponse.builder()
                 .token(jwtToken)
                 .message("User logged in successfully")
+                .user(userDto)
                 .build();
     }
 }

@@ -43,11 +43,11 @@ const TaskModal = ({ isOpen, onClose, onSave, task }) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-md shadow-xl transition-all duration-300">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">{task ? 'Edit Task' : 'Create Task'}</h2>
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md shadow-xl transition-all duration-300">
+        <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">{task ? 'Edit Task' : 'Create Task'}</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Title</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Title</label>
             <input
               type="text"
               {...register('title', { required: 'Title is required' })}
@@ -57,28 +57,28 @@ const TaskModal = ({ isOpen, onClose, onSave, task }) => {
                   document.getElementById('task-description')?.focus();
                 }
               }}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"
+              className="mt-1 block w-full rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"
               placeholder="Task Title"
             />
             {errors.title && <p className="mt-1 text-sm text-red-600">{errors.title.message}</p>}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Description</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Description</label>
             <textarea
               id="task-description"
               {...register('description')}
               rows={3}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"
+              className="mt-1 block w-full rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"
               placeholder="Task Description"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Status</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Status</label>
             <select
               {...register('status')}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"
+              className="mt-1 block w-full rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"
             >
               <option value="TODO">To Do</option>
               <option value="IN_PROGRESS">In Progress</option>
@@ -87,11 +87,15 @@ const TaskModal = ({ isOpen, onClose, onSave, task }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Due Date</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">Due Date</label>
             <input
-              type="date"
-              {...register('dueDate')}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"
+              type="text"
+              placeholder="yyyy-mm-dd"
+              onFocus={(e) => (e.target.type = 'date')}
+              {...register('dueDate', {
+                onBlur: (e) => (e.target.type = 'text')
+              })}
+              className="mt-1 block w-full rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-3 py-2 border"
             />
           </div>
 
@@ -99,7 +103,7 @@ const TaskModal = ({ isOpen, onClose, onSave, task }) => {
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
+              className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
             >
               Cancel
             </button>

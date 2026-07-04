@@ -20,25 +20,25 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-bl from-indigo-900 via-purple-900 to-black text-white px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white/10 backdrop-blur-lg p-8 rounded-2xl shadow-2xl border border-white/20">
+      <div className="max-w-md w-full space-y-8 bg-white dark:bg-gray-800/10 backdrop-blur-lg p-8 rounded-2xl shadow-2xl border border-white/20">
         <div>
           <h2 className="mt-2 text-center text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-600">
             Create an Account
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-300">
+          <p className="mt-2 text-center text-sm text-gray-300 dark:text-gray-600">
             Join us and start tracking your tasks
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1" htmlFor="name">
+              <label className="block text-sm font-medium text-gray-300 dark:text-gray-600 mb-1" htmlFor="name">
                 Full Name
               </label>
               <input
                 id="name"
                 type="text"
-                className={`appearance-none block w-full px-4 py-3 rounded-xl bg-white/5 border ${errors.name ? 'border-red-500' : 'border-white/10'} text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all`}
+                className={`appearance-none block w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-800/5 border ${errors.name ? 'border-red-500' : 'border-white/10'} text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all`}
                 placeholder="John Doe"
                 {...registerForm("name", { required: "Name is required" })}
               />
@@ -46,13 +46,13 @@ const Register = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1" htmlFor="email">
+              <label className="block text-sm font-medium text-gray-300 dark:text-gray-600 mb-1" htmlFor="email">
                 Email Address
               </label>
               <input
                 id="email"
                 type="email"
-                className={`appearance-none block w-full px-4 py-3 rounded-xl bg-white/5 border ${errors.email ? 'border-red-500' : 'border-white/10'} text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all`}
+                className={`appearance-none block w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-800/5 border ${errors.email ? 'border-red-500' : 'border-white/10'} text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all`}
                 placeholder="you@example.com"
                 {...registerForm("email", {
                   required: "Email is required",
@@ -63,13 +63,13 @@ const Register = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1" htmlFor="password">
+              <label className="block text-sm font-medium text-gray-300 dark:text-gray-600 mb-1" htmlFor="password">
                 Password
               </label>
               <input
                 id="password"
                 type="password"
-                className={`appearance-none block w-full px-4 py-3 rounded-xl bg-white/5 border ${errors.password ? 'border-red-500' : 'border-white/10'} text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all`}
+                className={`appearance-none block w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-800/5 border ${errors.password ? 'border-red-500' : 'border-white/10'} text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all`}
                 placeholder="••••••••"
                 {...registerForm("password", {
                   required: "Password is required",
@@ -80,13 +80,13 @@ const Register = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1" htmlFor="confirmPassword">
+              <label className="block text-sm font-medium text-gray-300 dark:text-gray-600 mb-1" htmlFor="confirmPassword">
                 Confirm Password
               </label>
               <input
                 id="confirmPassword"
                 type="password"
-                className={`appearance-none block w-full px-4 py-3 rounded-xl bg-white/5 border ${errors.confirmPassword ? 'border-red-500' : 'border-white/10'} text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all`}
+                className={`appearance-none block w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-800/5 border ${errors.confirmPassword ? 'border-red-500' : 'border-white/10'} text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent transition-all`}
                 placeholder="••••••••"
                 {...registerForm("confirmPassword", {
                   validate: value => value === password || "Passwords do not match"
@@ -106,7 +106,7 @@ const Register = () => {
             </button>
           </div>
 
-          <div className="text-center text-sm text-gray-400 mt-4">
+          <div className="text-center text-sm text-gray-400 dark:text-gray-500 mt-4">
             Already have an account?{' '}
             <Link to="/login" className="font-medium text-purple-400 hover:text-purple-300 transition-colors">
               Sign in instead
