@@ -43,7 +43,7 @@ function AppContent() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white flex flex-col font-sans">
       <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div className="w-full mx-auto px-4 sm:px-8 lg:px-16 xl:px-24 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-2 text-2xl font-black tracking-tight">
             <img src={logo} alt="TaskTracker Logo" className="h-10 w-10 object-contain" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600">TaskTracker</span>
@@ -186,7 +186,7 @@ function AppContent() {
       />
 
       <footer className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-auto">
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div className="w-full mx-auto py-6 px-4 sm:px-8 lg:px-16 xl:px-24">
           <p className="text-center text-sm text-gray-400 dark:text-gray-500">
             &copy; 2026 TaskTracker. All rights reserved.
           </p>

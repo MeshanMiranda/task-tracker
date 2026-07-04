@@ -18,6 +18,7 @@ const TasksPage = () => {
   const [statusFilter, setStatusFilter] = useState('');
   const [ownerFilter, setOwnerFilter] = useState('');
   const [sortOrder, setSortOrder] = useState('dueDate,asc');
+  const [viewMode, setViewMode] = useState('grid');
 
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -119,7 +120,7 @@ const TasksPage = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in-up">
+    <div className="w-full mx-auto px-4 sm:px-8 lg:px-16 xl:px-24 py-8 animate-fade-in-up">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Tasks</h1>
         <button
@@ -131,8 +132,8 @@ const TasksPage = () => {
         </button>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 p-6 mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 p-6 mb-8 flex flex-col md:flex-row gap-6 justify-between items-start md:items-end">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 flex-grow w-full">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Status</label>
             <select
@@ -177,6 +178,26 @@ const TasksPage = () => {
             </select>
           </div>
         </div>
+        
+        <div className="flex-shrink-0 mt-4 md:mt-0">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">View</label>
+          <div className="flex bg-gray-100 dark:bg-gray-700 p-1 rounded-lg">
+            <button
+              onClick={() => setViewMode('grid')}
+              className={`p-2 rounded-md flex items-center justify-center transition-colors ${viewMode === 'grid' ? 'bg-white dark:bg-gray-600 shadow text-indigo-600 dark:text-indigo-400' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}`}
+              title="Grid View"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+            </button>
+            <button
+              onClick={() => setViewMode('list')}
+              className={`p-2 rounded-md flex items-center justify-center transition-colors ${viewMode === 'list' ? 'bg-white dark:bg-gray-600 shadow text-indigo-600 dark:text-indigo-400' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}`}
+              title="List View"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+            </button>
+          </div>
+        </div>
       </div>
 
       {loading ? (
@@ -185,45 +206,101 @@ const TasksPage = () => {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className={viewMode === 'grid' ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" : "flex flex-col space-y-3"}>
+            {viewMode === 'list' && tasks.length > 0 && (
+              <div className="flex items-center p-4 gap-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                <div className="w-1/4 min-w-0">Title</div>
+                <div className="w-1/4 min-w-0">Description</div>
+                <div className="w-24 flex-shrink-0">Status</div>
+                {user?.role === 'ADMIN' && <div className="w-32 flex-shrink-0">Owner</div>}
+                <div className="w-28 flex-shrink-0">Due Date</div>
+                <div className="flex-grow text-right pr-2">Actions</div>
+              </div>
+            )}
             {tasks.map(task => (
-              <div key={task.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-800 hover:shadow-lg transition-shadow duration-300">
-                <div className="p-6">
-                  <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white truncate pr-4">{task.title}</h3>
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusBadgeClass(task.status)}`}>
-                      {task.status.replace('_', ' ')}
-                    </span>
+              viewMode === 'grid' ? (
+                <div key={task.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-800 hover:shadow-lg transition-shadow duration-300 flex flex-col h-full relative group">
+                  <div className="p-6 flex-grow flex flex-col">
+                    <div className="flex justify-between items-start mb-4">
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white truncate pr-4">{task.title}</h3>
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={() => handleOpenModal(task)}
+                          className="text-gray-400 hover:text-indigo-600 transition-colors duration-200"
+                          title="Edit Task"
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                        </button>
+                        <button
+                          onClick={() => confirmDelete(task.id)}
+                          className="text-gray-400 hover:text-red-600 transition-colors duration-200"
+                          title="Delete Task"
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div className="mb-4">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusBadgeClass(task.status)}`}>
+                        {task.status.replace('_', ' ')}
+                      </span>
+                    </div>
+                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3 min-h-[4rem]">{task.description}</p>
+                    <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400 mt-auto">
+                      <div className="flex items-center">
+                        <svg className="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <span className="truncate">Due: <span className={new Date(task.dueDate) < new Date() && task.status !== 'DONE' ? 'text-red-500 font-semibold ml-1' : 'ml-1'}>{task.dueDate || 'No date set'}</span></span>
+                      </div>
+                      {user?.role === 'ADMIN' && (
+                         <div className="flex items-center">
+                           <svg className="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                           <span className="truncate">Owner: <span className="ml-1 font-medium">{task.owner?.name}</span></span>
+                         </div>
+                      )}
+                    </div>
                   </div>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3 min-h-[4rem]">{task.description}</p>
-                  <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
-                    <div className="flex items-center">
-                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                      Due: <span className={new Date(task.dueDate) < new Date() && task.status !== 'DONE' ? 'text-red-500 font-semibold ml-1' : 'ml-1'}>{task.dueDate || 'No date set'}</span>
+                </div>
+              ) : (
+                <div key={task.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 hover:shadow-md transition-shadow duration-300 overflow-hidden">
+                  <div className="flex items-center p-4 gap-4">
+                    <div className="w-1/4 min-w-0">
+                      <h3 className="text-sm font-bold text-gray-900 dark:text-white truncate" title={task.title}>{task.title}</h3>
+                    </div>
+                    <div className="w-1/4 min-w-0">
+                      <p className="text-gray-600 dark:text-gray-300 text-sm truncate" title={task.description}>{task.description}</p>
+                    </div>
+                    <div className="w-24 flex-shrink-0 flex items-center">
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusBadgeClass(task.status)}`}>
+                        {task.status.replace('_', ' ')}
+                      </span>
                     </div>
                     {user?.role === 'ADMIN' && (
-                       <div className="flex items-center">
-                         <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                         Owner: <span className="ml-1 font-medium">{task.owner?.name}</span>
-                       </div>
+                      <div className="w-32 flex-shrink-0 flex items-center text-sm text-gray-500 dark:text-gray-400 min-w-0">
+                        <span className="truncate" title={task.owner?.name}>{task.owner?.name}</span>
+                      </div>
                     )}
+                    <div className="w-28 flex-shrink-0 flex items-center text-sm text-gray-500 dark:text-gray-400 min-w-0">
+                      <span className={`truncate ${new Date(task.dueDate) < new Date() && task.status !== 'DONE' ? 'text-red-500 font-semibold' : ''}`}>{task.dueDate || 'No date set'}</span>
+                    </div>
+                    <div className="flex-grow flex items-center justify-end space-x-4 pr-2">
+                      <button
+                        onClick={() => handleOpenModal(task)}
+                        className="text-gray-400 hover:text-indigo-600 transition-colors duration-200"
+                        title="Edit Task"
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                      </button>
+                      <button
+                        onClick={() => confirmDelete(task.id)}
+                        className="text-gray-400 hover:text-red-600 transition-colors duration-200"
+                        title="Delete Task"
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                      </button>
+                    </div>
                   </div>
                 </div>
-                <div className="bg-gray-50 dark:bg-gray-900 px-6 py-3 border-t border-gray-100 dark:border-gray-800 flex justify-end space-x-3">
-                  <button
-                    onClick={() => handleOpenModal(task)}
-                    className="text-indigo-600 hover:text-indigo-900 font-medium text-sm transition-colors duration-200"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => confirmDelete(task.id)}
-                    className="text-red-600 hover:text-red-900 font-medium text-sm transition-colors duration-200"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
+              )
             ))}
             {tasks.length === 0 && (
                <div className="col-span-full py-12 text-center text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800">
