@@ -14,7 +14,7 @@ const Register = () => {
       await register({ name: data.name, username: data.username, email: data.email, password: data.password });
       navigate('/');
     } catch (error) {
-
+      console.error(error);
     }
   };
 

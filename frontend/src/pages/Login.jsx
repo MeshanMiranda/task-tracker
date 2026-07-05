@@ -71,7 +71,7 @@ const Login = () => {
           </div>
           
           <div className="text-center text-sm text-gray-600 dark:text-gray-400 mt-4">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <Link to="/register" className="font-medium text-pink-400 hover:text-pink-300 transition-colors">
               Sign up now
             </Link>
