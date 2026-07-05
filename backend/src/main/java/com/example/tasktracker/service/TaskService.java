@@ -24,7 +24,7 @@ public class TaskService {
 
     public Page<TaskResponse> getTasks(Long ownerId, TaskStatus status, Pageable pageable) {
         User currentUser = getCurrentUser();
-        
+
         if (currentUser.getRole() == Role.ADMIN) {
             if (ownerId != null && status != null) {
                 User owner = userRepository.findById(ownerId).orElseThrow(() -> new RuntimeException("User not found"));
@@ -38,9 +38,9 @@ public class TaskService {
                 return taskRepository.findByValid(1, pageable).map(this::mapToResponse);
             }
         } else {
-            // Regular user can only see their own tasks
             if (status != null) {
-                return taskRepository.findByOwnerAndStatusAndValid(currentUser, status, 1, pageable).map(this::mapToResponse);
+                return taskRepository.findByOwnerAndStatusAndValid(currentUser, status, 1, pageable)
+                        .map(this::mapToResponse);
             } else {
                 return taskRepository.findByOwnerAndValid(currentUser, 1, pageable).map(this::mapToResponse);
             }
@@ -76,12 +76,12 @@ public class TaskService {
             throw new RuntimeException("Task not found");
         }
         checkAccess(task);
-        
+
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
         task.setStatus(request.getStatus());
         task.setDueDate(request.getDueDate());
-        
+
         Task updatedTask = taskRepository.save(task);
         return mapToResponse(updatedTask);
     }
