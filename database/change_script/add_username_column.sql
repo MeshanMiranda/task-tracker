@@ -1,0 +1,4 @@
+ALTER TABLE users ADD COLUMN username VARCHAR(255) NOT NULL UNIQUE;
+
+ALTER TABLE `users` 
+CHANGE COLUMN `username` `username` VARCHAR(255) NOT NULL AFTER `name`;
