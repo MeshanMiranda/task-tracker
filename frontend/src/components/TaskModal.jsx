@@ -13,7 +13,7 @@ const TaskModal = ({ isOpen, onClose, onSave, task }) => {
         title: task.title,
         description: task.description,
         status: task.status,
-        dueDate: task.dueDate ? task.dueDate.split('T')[0] : '', // Extract just the date part if necessary
+        dueDate: task.dueDate ? task.dueDate.split('T')[0] : '',
       });
     } else {
       reset({

@@ -11,7 +11,7 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       await login(data);
-      navigate('/'); // Redirect to dashboard or home
+      navigate('/');
     } catch (error) {
       // Error is handled by context/toast
     }
@@ -39,7 +39,7 @@ const Login = () => {
                 type="text"
                 className={`appearance-none block w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-700 border ${errors.username ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:focus:ring-purple-400 focus:border-transparent transition-all`}
                 placeholder="johndoe"
-                {...register("username", { 
+                {...register("username", {
                   required: "Username is required"
                 })}
               />
@@ -69,7 +69,7 @@ const Login = () => {
               {isSubmitting ? 'Signing in...' : 'Sign In'}
             </button>
           </div>
-          
+
           <div className="text-center text-sm text-gray-600 dark:text-gray-400 mt-4">
             Don&apos;t have an account?{' '}
             <Link to="/register" className="font-medium text-pink-400 hover:text-pink-300 transition-colors">

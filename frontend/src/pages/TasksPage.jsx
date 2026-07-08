@@ -11,8 +11,7 @@ const TasksPage = () => {
   const [tasks, setTasks] = useState([]);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  
-  // Pagination & Filtering state
+
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [statusFilter, setStatusFilter] = useState('');
@@ -20,10 +19,9 @@ const TasksPage = () => {
   const [sortOrder, setSortOrder] = useState('dueDate,asc');
   const [viewMode, setViewMode] = useState('grid');
 
-  // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
-  
+
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState(null);
 
@@ -32,7 +30,7 @@ const TasksPage = () => {
       setLoading(true);
       const params = {
         page,
-        size: 10, // Items per page
+        size: 10,
         sort: sortOrder
       };
       if (statusFilter) params.status = statusFilter;
@@ -147,7 +145,7 @@ const TasksPage = () => {
               <option value="DONE">Done</option>
             </select>
           </div>
-          
+
           {user?.role === 'ADMIN' && (
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Owner</label>
@@ -178,7 +176,7 @@ const TasksPage = () => {
             </select>
           </div>
         </div>
-        
+
         <div className="flex-shrink-0 mt-4 md:mt-0">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">View</label>
           <div className="flex bg-gray-100 dark:bg-gray-700 p-1 rounded-lg">
@@ -252,10 +250,10 @@ const TasksPage = () => {
                         <span className="truncate">Due: <span className={new Date(task.dueDate) < new Date() && task.status !== 'DONE' ? 'text-red-500 font-semibold ml-1' : 'ml-1'}>{task.dueDate || 'No date set'}</span></span>
                       </div>
                       {user?.role === 'ADMIN' && (
-                         <div className="flex items-center">
-                           <svg className="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                           <span className="truncate">Owner: <span className="ml-1 font-medium">{task.owner?.name}</span></span>
-                         </div>
+                        <div className="flex items-center">
+                          <svg className="w-4 h-4 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                          <span className="truncate">Owner: <span className="ml-1 font-medium">{task.owner?.name}</span></span>
+                        </div>
                       )}
                     </div>
                   </div>
@@ -303,11 +301,11 @@ const TasksPage = () => {
               )
             ))}
             {tasks.length === 0 && (
-               <div className="col-span-full py-12 text-center text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800">
-                 <svg className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
-                 <p className="text-lg">No tasks found.</p>
-                 <p className="text-sm mt-1">Try adjusting your filters or create a new task.</p>
-               </div>
+              <div className="col-span-full py-12 text-center text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800">
+                <svg className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                <p className="text-lg">No tasks found.</p>
+                <p className="text-sm mt-1">Try adjusting your filters or create a new task.</p>
+              </div>
             )}
           </div>
 
